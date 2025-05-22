@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebTalk</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <div class="logo">🎤</div>
+      <h1>WebTalk</h1>
+      <p>Voice Transcription Assistant</p>
+    </div>
+    
+    <div class="content">
+      <div class="how-to-use">
+        <h3>How to Use:</h3>
+        <ol>
+          <li>Right-click anywhere on a webpage</li>
+          <li>Select "🎤 Start WebTalk Recording"</li>
+          <li>Hold the record button and speak</li>
+          <li>Right-click the transcription to copy</li>
+        </ol>
+      </div>
+      
+      <div class="server-status" id="serverStatus">
+        <div class="status-indicator" id="statusIndicator">🔴</div>
+        <span id="statusText">Checking server...</span>
+      </div>
+      
+      <div class="actions">
+        <button id="testServer" class="btn">Test Server</button>
+        <button id="openSettings" class="btn secondary">Settings</button>
+      </div>
+      
+      <div class="footer">
+        <p>Powered by Whisper AI</p>
+        <p class="version">v1.0</p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 
