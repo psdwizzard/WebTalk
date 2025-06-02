@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>WebTalk Server Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .settings-container {
+            width: 400px;
+            background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .input-field, .select-field {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.875rem;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .input-field:focus, .select-field:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .select-field option {
+            color: #333;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+        .btn-primary {
+            background-color: #FF4081;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #F50057;
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            background-color: rgba(255, 64, 129, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert-message {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+            text-align: center;
+        }
+        .success-message {
+            color: #4CAF50;
+        }
+        .error-message {
+            color: #FF5722;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Cpath d='M12 2C11.45 2 11 2.45 11 3V6.08C7.76 6.57 5.25 9.24 5.04 12.5C5.01 12.98 4.63 13.38 4.15 13.42C3.66 13.45 3.27 13.08 3.24 12.6C3.07 9.72 5.03 7.16 7.82 6.33V3C7.82 2.45 8.27 2 8.82 2H9.18C9.73 2 10.18 2.45 10.18 3V5.54C10.79 5.42 11.4 5.35 12 5.35S13.21 5.42 13.82 5.54V3C13.82 2.45 14.27 2 14.82 2H15.18C15.73 2 16.18 2.45 16.18 3V6.33C18.97 7.16 20.93 9.72 20.76 12.6C20.73 13.08 20.34 13.45 19.85 13.42C19.37 13.38 18.99 12.98 18.96 12.5C18.75 9.24 16.24 6.57 13 6.08V3C13 2.45 12.55 2 12 2ZM12 7.35C14.68 7.35 16.91 9.45 17.03 12.12L17.05 12.5C17.07 12.8 16.92 13.08 16.67 13.26C16.41 13.44 16.09 13.44 15.83 13.26L15.47 13C15.06 12.72 14.53 12.78 14.19 13.11C13.85 13.45 13.79 13.98 14.07 14.39L14.33 14.74C14.51 15 14.51 15.31 14.33 15.57C14.15 15.83 13.84 15.91 13.57 15.79L13.05 15.57C12.7 15.41 12.35 15.41 12 15.57L11.43 15.79C11.16 15.91 10.85 15.83 10.67 15.57C10.49 15.31 10.49 15 10.67 14.74L10.93 14.39C11.21 13.98 11.15 13.45 10.81 13.11C10.47 12.78 9.94 12.72 9.53 13L9.17 13.26C8.91 13.44 8.59 13.44 8.33 13.26C8.08 13.08 7.93 12.8 7.95 12.5L7.97 12.12C8.09 9.45 10.32 7.35 13 7.35H12ZM6 15V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V15H16V19H8V15H6Z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .icon-input-group {
+            position: relative;
+        }
+        .icon-input-group .material-icons {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.25rem;
+        }
+        .icon-input-group .input-field {
+            padding-left: 44px;
+        }
+        .icon-input-group .select-field {
+            padding-left: 44px;
+        }
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: .4s;
+            border-radius: 28px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #FF4081;
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #FF4081;
+        }
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        .toggle-label {
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+    <div class="settings-container">
+        <div class="header">
+            <div class="header-icon"></div>
+            <h1 class="header-title">WebTalk Server Settings</h1>
+        </div>
+        
+        <div class="input-group">
+            <label for="compute-engine">Compute Engine</label>
+            <div class="toggle-switch-container">
+                <span class="toggle-label">GPU</span>
+                <label class="toggle-switch">
+                    <input id="compute-engine-toggle" type="checkbox"/>
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-label">CPU</span>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="model-selector">Model Selector</label>
+            <div class="icon-input-group">
+                <span class="material-icons">tune</span>
+                <select class="select-field" id="model-selector">
+                    <option value="tiny">Tiny</option>
+                    <option value="base">Base</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="large-v2">Large-v2</option>
+                    <option value="large-v3">Large-v3</option>
+                    <option value="turbo">Turbo</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="microphone-selector">Microphone Selector</label>
+            <div class="icon-input-group">
+                <span class="material-icons">mic</span>
+                <select class="select-field" id="microphone-selector">
+                    <option value="default">Default Microphone</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="server-port">Server Port</label>
+            <div class="icon-input-group">
+                <span class="material-icons">settings_ethernet</span>
+                <input class="input-field" id="server-port" placeholder="e.g., 8080" type="number" value="9090"/>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="auth-key">Authentication Key (Optional)</label>
+            <div class="icon-input-group">
+                <span class="material-icons">vpn_key</span>
+                <input class="input-field" id="auth-key" placeholder="Enter a secure key" type="password"/>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="openai-api-key">OpenAI API Key (Fallback)</label>
+            <div class="icon-input-group">
+                <span class="material-icons">api</span>
+                <input class="input-field" id="openai-api-key" placeholder="sk-..." type="text"/>
+            </div>
+            <p class="text-xs text-gray-300 mt-1 opacity-75">Used if local hardware is insufficient.</p>
+        </div>
+        
+        <button class="btn btn-primary w-full" id="save-apply-button">
+            <span class="material-icons mr-2">save</span>
+            Save & Apply Settings
+        </button>
+        
+        <p class="alert-message" id="status-message" style="display: none;"></p>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        
+        // DOM elements
+        const saveButton = document.getElementById('save-apply-button');
+        const statusMessage = document.getElementById('status-message');
+        const inputs = document.querySelectorAll('.input-field, .select-field, #compute-engine-toggle');
+        
+        let initialValues = {};
+        let currentConfig = {};
+
+        // Initialize the page
+        async function init() {
+            await loadCurrentConfig();
+            populateForm();
+            setupEventListeners();
+        }
+
+        // Load current configuration from server
+        async function loadCurrentConfig() {
+            try {
+                const response = await fetch(`${API_BASE}/config`);
+                if (response.ok) {
+                    currentConfig = await response.json();
+                    console.log('Loaded config:', currentConfig);
+                } else {
+                    console.warn('Failed to load config, using defaults');
+                    currentConfig = {
+                        compute_engine: 'cpu',
+                        model_selector: 'tiny',
+                        microphone_selector: 'default',
+                        server_port: 9090,
+                        auth_key: '',
+                        openai_api_key: ''
+                    };
+                }
+            } catch (error) {
+                console.error('Error loading config:', error);
+                showStatus('Failed to load current settings', 'error');
+            }
+        }
+
+        // Populate form with current configuration
+        function populateForm() {
+            // Set compute engine toggle (GPU = checked, CPU = unchecked)
+            const computeToggle = document.getElementById('compute-engine-toggle');
+            computeToggle.checked = currentConfig.compute_engine === 'gpu';
+            
+            // Set other fields
+            document.getElementById('model-selector').value = currentConfig.model_selector || 'tiny';
+            document.getElementById('microphone-selector').value = currentConfig.microphone_selector || 'default';
+            document.getElementById('server-port').value = currentConfig.server_port || 9090;
+            document.getElementById('auth-key').value = currentConfig.auth_key || '';
+            document.getElementById('openai-api-key').value = currentConfig.openai_api_key || '';
+
+            // Store initial values
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    initialValues[input.id] = input.checked;
+                } else {
+                    initialValues[input.id] = input.value;
+                }
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            saveButton.addEventListener('click', saveSettings);
+            
+            // Monitor changes
+            inputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    if (checkForChanges()) {
+                        showStatus('Settings changed - click Save to apply', 'warning');
+                    } else {
+                        hideStatus();
+                    }
+                });
+            });
+        }
+
+        // Check if settings have changed
+        function checkForChanges() {
+            let changed = false;
+            inputs.forEach(input => {
+                const currentValue = input.type === 'checkbox' ? input.checked : input.value;
+                if (currentValue !== initialValues[input.id]) {
+                    changed = true;
+                }
+            });
+            return changed;
+        }
+
+        // Save settings to server
+        async function saveSettings() {
+            const computeToggle = document.getElementById('compute-engine-toggle');
+            
+            const newConfig = {
+                compute_engine: computeToggle.checked ? 'gpu' : 'cpu',
+                model_selector: document.getElementById('model-selector').value,
+                microphone_selector: document.getElementById('microphone-selector').value,
+                server_port: parseInt(document.getElementById('server-port').value),
+                auth_key: document.getElementById('auth-key').value,
+                openai_api_key: document.getElementById('openai-api-key').value
+            };
+
+            try {
+                saveButton.disabled = true;
+                saveButton.innerHTML = '<span class="material-icons mr-2">hourglass_empty</span>Saving...';
+                
+                const response = await fetch(`${API_BASE}/config`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newConfig)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showStatus('Settings saved successfully!', 'success');
+                    
+                    // Update initial values
+                    inputs.forEach(input => {
+                        if (input.type === 'checkbox') {
+                            initialValues[input.id] = input.checked;
+                        } else {
+                            initialValues[input.id] = input.value;
+                        }
+                    });
+                    
+                    // Check if restart is needed
+                    if (result.restart_required) {
+                        setTimeout(() => {
+                            showStatus('Server restart required for changes to take effect', 'warning');
+                        }, 2000);
+                    }
+                } else {
+                    const error = await response.json();
+                    showStatus(`Failed to save settings: ${error.detail || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showStatus('Failed to save settings - connection error', 'error');
+            } finally {
+                saveButton.disabled = false;
+                saveButton.innerHTML = '<span class="material-icons mr-2">save</span>Save & Apply Settings';
+            }
+        }
+
+        // Show status message
+        function showStatus(message, type = 'info') {
+            statusMessage.textContent = message;
+            statusMessage.className = `alert-message ${type}-message`;
+            statusMessage.style.display = 'block';
+        }
+
+        // Hide status message
+        function hideStatus() {
+            statusMessage.style.display = 'none';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html> 

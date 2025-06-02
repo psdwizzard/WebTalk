@@ -1,0 +1,9 @@
+{
+  "compute_engine": "cpu",
+  "model_selector": "turbo",
+  "microphone_selector": "default",
+  "server_port": 9090,
+  "auth_key": "",
+  "openai_api_key": "",
+  "host": "127.0.0.1"
+}
