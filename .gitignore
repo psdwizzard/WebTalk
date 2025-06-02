@@ -69,4 +69,4 @@ chrome_extension.zip
 chrome_extension.crx
 
 # Archive directory (optional - contains old/reference files)
-# archive/
+archive/

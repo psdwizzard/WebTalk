@@ -23,7 +23,7 @@ WebTalk is a powerful voice transcription tool that combines local Whisper AI wi
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/WebTalk.git
+git clone https://github.com/psdwizzard/WebTalk.git
 cd WebTalk
 
 # Run the installer (takes a few minutes)
@@ -67,7 +67,6 @@ WebTalk/
 ├── ComfyUI_00803__C.ico         # App icon
 ├── chrome_extension/            # Browser extension
 ├── docs/                        # Documentation & screenshots
-├── archive/                     # Archived/legacy files
 ├── build/                       # Executable building tools
 └── whisper_env/                 # Python virtual environment
 ```
