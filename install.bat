@@ -20,6 +20,7 @@ if errorlevel 1 (
     echo Please install Python 3.8+ from https://python.org
     echo Make sure to check "Add Python to PATH" during installation
     echo.
+    echo Press any key to exit...
     pause
     exit /b 1
 )
@@ -62,83 +63,147 @@ if exist whisper_env (
     rmdir /s /q whisper_env
 )
 
+echo Running: python -m venv whisper_env
 python -m venv whisper_env
 if errorlevel 1 (
     echo ERROR: Failed to create virtual environment
+    echo Error code: %errorlevel%
     echo Make sure you have the full Python installation (not Microsoft Store version)
+    echo.
+    echo Press any key to exit...
     pause
     exit /b 1
 )
 
-echo ✓ Virtual environment created
+echo ✓ Virtual environment created successfully
 
 echo Activating virtual environment...
+echo Running: call whisper_env\Scripts\activate.bat
 call whisper_env\Scripts\activate.bat
 if errorlevel 1 (
     echo ERROR: Failed to activate virtual environment
+    echo Error code: %errorlevel%
+    echo.
+    echo Press any key to exit...
     pause
     exit /b 1
 )
 
+echo ✓ Virtual environment activated successfully
+
+REM Test that we're in the virtual environment
+echo Testing virtual environment...
+python -c "import sys; print('Python executable:', sys.executable)"
+if errorlevel 1 (
+    echo ERROR: Virtual environment test failed
+    echo Press any key to exit...
+    pause
+    exit /b 1
+)
+
+echo ✓ Virtual environment test passed
+
 echo Installing PyTorch with CUDA support...
+echo Running: pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118
 pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118
 if errorlevel 1 (
-    echo WARNING: CUDA PyTorch installation failed, trying CPU version...
+    echo WARNING: CUDA PyTorch installation failed (Error code: %errorlevel%)
+    echo Trying CPU version...
+    echo Running: pip install torch torchaudio
     pip install torch torchaudio
     if errorlevel 1 (
-        echo ERROR: Failed to install PyTorch
+        echo ERROR: Failed to install PyTorch (Error code: %errorlevel%)
+        echo This is a critical dependency - installation cannot continue
+        echo.
+        echo Try these solutions:
+        echo 1. Check your internet connection
+        echo 2. Try running as administrator
+        echo 3. Update pip: python -m pip install --upgrade pip
+        echo.
+        echo Press any key to exit...
         pause
         exit /b 1
     )
+    echo ✓ PyTorch CPU version installed successfully
+) else (
+    echo ✓ PyTorch CUDA version installed successfully
 )
 
 echo Installing OpenAI Whisper...
+echo Running: pip install openai-whisper
 pip install openai-whisper
 if errorlevel 1 (
-    echo ERROR: Failed to install OpenAI Whisper
+    echo ERROR: Failed to install OpenAI Whisper (Error code: %errorlevel%)
+    echo.
+    echo Try these solutions:
+    echo 1. Check your internet connection
+    echo 2. Try running as administrator  
+    echo 3. Update pip: python -m pip install --upgrade pip
+    echo.
+    echo Press any key to exit...
     pause
     exit /b 1
 )
+
+echo ✓ OpenAI Whisper installed successfully
 
 echo Installing web framework dependencies...
+echo Running: pip install fastapi uvicorn python-multipart requests pydantic
 pip install fastapi uvicorn python-multipart requests pydantic
 if errorlevel 1 (
-    echo ERROR: Failed to install web dependencies
+    echo ERROR: Failed to install web dependencies (Error code: %errorlevel%)
+    echo.
+    echo Press any key to exit...
     pause
     exit /b 1
 )
+
+echo ✓ Web framework dependencies installed successfully
 
 echo Installing Flask for settings app...
+echo Running: pip install flask
 pip install flask
 if errorlevel 1 (
-    echo ERROR: Failed to install Flask
+    echo ERROR: Failed to install Flask (Error code: %errorlevel%)
+    echo.
+    echo Press any key to exit...
     pause
     exit /b 1
 )
 
+echo ✓ Flask installed successfully
+
 echo Installing PyWebView for GUI...
-REM Install PyWebView with Windows-specific dependencies
+echo Running: pip install pywebview[win32]
 pip install pywebview[win32]
 if errorlevel 1 (
-    echo WARNING: Failed to install PyWebView with win32 dependencies, trying basic installation...
+    echo WARNING: Failed to install PyWebView with win32 dependencies (Error code: %errorlevel%)
+    echo Trying basic installation...
+    echo Running: pip install pywebview
     pip install pywebview
     if errorlevel 1 (
-        echo ERROR: Failed to install PyWebView
+        echo WARNING: Failed to install PyWebView (Error code: %errorlevel%)
         echo The Settings GUI may not work properly
         echo You can still use the Chrome extension with the server
         echo.
+    ) else (
+        echo ✓ PyWebView basic version installed successfully
     )
+) else (
+    echo ✓ PyWebView with Windows dependencies installed successfully
 )
 
 echo Installing additional dependencies...
-pip install psutil threading sounddevice numpy
+echo Running: pip install psutil numpy sounddevice
+pip install psutil numpy sounddevice
 if errorlevel 1 (
-    echo WARNING: Some optional dependencies failed to install
+    echo WARNING: Some optional dependencies failed to install (Error code: %errorlevel%)
     echo WebTalk should still work but some features may be limited
     echo.
 )
 
 echo Updating pip to latest version...
+echo Running: python -m pip install --upgrade pip
 python -m pip install --upgrade pip
 
 echo.
@@ -162,4 +227,5 @@ echo 1. Open Chrome and go to chrome://extensions/
 echo 2. Enable Developer mode
 echo 3. Click "Load unpacked" and select the chrome_extension folder
 echo.
+echo Installation completed successfully! Press any key to continue...
 pause 
