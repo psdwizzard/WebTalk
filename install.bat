@@ -51,7 +51,7 @@ echo Installation Complete! 🎉
 echo ========================================
 echo.
 echo To start WebTalk:
-echo   .\launch_settings_app.bat
+echo   .\Launch.bat
 echo.
 echo Then install the Chrome extension:
 echo   1. Open Chrome and go to chrome://extensions/

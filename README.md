@@ -33,7 +33,7 @@ install.bat
 ### 2. Launch WebTalk
 ```bash
 # Start everything with one command (use .\ in PowerShell)
-.\launch_settings_app.bat
+.\Launch.bat
 ```
 
 This single command starts:
@@ -60,9 +60,9 @@ WebTalk/
 ├── README.md                     # This file
 ├── requirements.txt              # Python dependencies  
 ├── install.bat                   # Setup script
-├── launch_settings_app.bat       # 🚀 MAIN LAUNCHER
-├── webtalk_settings.py          # Entry point
-├── settings_app_flask.py        # Core application (server + GUI)
+├── Launch.bat                    # 🚀 MAIN LAUNCHER
+├── settings_app_flask.py        # 💎 Core unified application (server + GUI)
+├── webtalk_settings.py          # Entry point helper
 ├── webtalk_config.json          # Configuration file
 ├── ComfyUI_00803__C.ico         # App icon
 ├── chrome_extension/            # Browser extension
