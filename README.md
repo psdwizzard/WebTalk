@@ -30,9 +30,16 @@ cd WebTalk
 install.bat
 ```
 
+**System Requirements:**
+- Windows 10/11
+- Python 3.8+ (not Microsoft Store version)
+- Visual C++ Redistributable
+- WebView2 Runtime
+- 4GB+ RAM (8GB+ recommended for larger models)
+
 ### 2. Launch WebTalk
 ```bash
-# Start everything with one command (use .\ in PowerShell)
+# Start everything with one command (use .\\ in PowerShell)
 .\Launch.bat
 ```
 
@@ -45,13 +52,13 @@ This single command starts:
 1. Open Chrome and go to `chrome://extensions/`
 2. Enable "Developer mode" (toggle in top right)
 3. Click "Load unpacked" and select the `chrome_extension` folder
-4. 🎉 The WebTalk extension icon should appear in your toolbar
+4. The WebTalk extension will appear in your toolbar
 
-### 4. Start Transcribing
-1. Right-click on any webpage
-2. Select "🎤 Start WebTalk Recording"
-3. Speak into your microphone
-4. ✨ Get instant transcription inserted into text fields
+### 4. Start Transcribing!
+- Right-click on any webpage
+- Select "Start Recording" from the context menu
+- Speak into your microphone
+- Watch your speech appear as text!
 
 ## 📁 Project Structure
 
@@ -107,6 +114,72 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 🔧 Troubleshooting
+
+### Installation Issues
+
+**"Python is not installed or not in PATH"**
+- Install Python from [python.org](https://python.org)
+- ⚠️ **IMPORTANT**: Check "Add Python to PATH" during installation
+- ⚠️ **AVOID**: Microsoft Store Python (use python.org version)
+
+**"Failed to create virtual environment"**
+- Make sure you have the full Python installation (not Microsoft Store version)
+- Try running Command Prompt as Administrator
+- Update Python to the latest version
+
+**PyWebView Installation Fails**
+- Install Visual C++ Redistributable: [Download here](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+- Install WebView2 Runtime: [Download here](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+- Restart your computer after installing these
+
+**PyTorch CUDA Installation Fails**
+- This is normal if you don't have an NVIDIA GPU
+- The installer will automatically fall back to CPU version
+- CPU version works fine, just slower for large audio files
+
+### Runtime Issues
+
+**Settings App Won't Open**
+- Install WebView2 Runtime: [Download here](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+- Check Windows Defender isn't blocking the application
+- Try running `Launch.bat` as Administrator
+
+**Chrome Extension Can't Connect**
+- Make sure both server and settings app are running (`Launch.bat`)
+- Check that Windows Firewall isn't blocking localhost connections
+- Try disabling other extensions that might interfere
+- Restart Chrome after installing the extension
+
+**"No module named 'torch'" Error**
+- Activate the virtual environment: `whisper_env\Scripts\activate.bat`
+- Reinstall dependencies: `pip install -r requirements.txt`
+- Try running the installer again
+
+**Microphone Not Working**
+- Check microphone permissions in Windows Settings
+- Ensure microphone is working in other applications
+- Try a different microphone or USB headset
+
+**Slow Transcription**
+- Use a smaller Whisper model in settings (tiny, base instead of large)
+- Consider upgrading RAM (8GB+ recommended)
+- For faster processing, use a computer with NVIDIA GPU
+
+### Performance Tips
+
+**For Better Speed:**
+- Use GPU if available (NVIDIA graphics card)
+- Use smaller models (tiny, base) for faster transcription
+- Close other applications to free up RAM
+- Use shorter audio clips
+
+**For Better Accuracy:**
+- Use larger models (medium, large) for better quality
+- Ensure good microphone quality
+- Record in quiet environment
+- Speak clearly and at moderate pace
 
 ---
 
