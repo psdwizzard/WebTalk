@@ -37,8 +37,8 @@ install.bat
 ```
 
 This single command starts:
-- 🖥️ The beautiful settings desktop app (localhost:5555)
 - 🤖 The Whisper transcription server (localhost:8000)  
+- 🖥️ The beautiful settings desktop app (localhost:5555)
 - 🔗 Everything needed for the Chrome extension to connect
 
 ### 3. Install Chrome Extension
@@ -61,7 +61,8 @@ WebTalk/
 ├── requirements.txt              # Python dependencies  
 ├── install.bat                   # Setup script
 ├── Launch.bat                    # 🚀 MAIN LAUNCHER
-├── settings_app_flask.py        # 💎 Core unified application (server + GUI)
+├── server.py                     # 🤖 Whisper transcription server
+├── settings_app_flask.py        # 🖥️ Settings GUI application
 ├── webtalk_settings.py          # Entry point helper
 ├── webtalk_config.json          # Configuration file
 ├── ComfyUI_00803__C.ico         # App icon
