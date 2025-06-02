@@ -53,11 +53,37 @@ echo ✓ Virtual environment created successfully
 
 echo.
 echo Activating virtual environment...
-echo Running: call whisper_env\Scripts\activate.bat
-call whisper_env\Scripts\activate.bat
+echo Running: call whisper_env\\Scripts\\activate.bat
+call whisper_env\\Scripts\\activate.bat
 
 echo.
-echo Testing virtual environment...
+echo Testing virtual environment activation...
+REM This Python command will output its executable path. Note: CHCP 437 is sometimes needed for findstr to work reliably with paths.
+CHCP 437 >NUL
+for /f "delims=" %%a in ('python -c "import sys; print(sys.executable)"') do set PYTHON_EXE_PATH=%%a
+CHCP %ORIGINAL_CHCP% >NUL
+
+echo Actual Python executable: %PYTHON_EXE_PATH%
+echo %PYTHON_EXE_PATH% | findstr /I /C:"whisper_env" > nul
+if errorlevel 1 (
+    echo.
+    echo CRITICAL ERROR: Virtual environment did not activate correctly.
+    echo The Python executable being used (%PYTHON_EXE_PATH%) is NOT from the 'whisper_env'.
+    echo This usually means 'call whisper_env\\Scripts\\activate.bat' failed silently or global Python is interfering.
+    echo Common causes:
+    echo   1. Issues with your main Python installation (e.g., Microsoft Store version, corrupted PATH).
+    echo   2. Antivirus software interfering with script execution.
+    echo   3. Errors within the 'activate.bat' script itself on this system.
+    echo Please check your Python installation and PATH settings.
+    echo.
+    echo Press any key to exit...
+    pause
+    exit /b 1
+)
+echo ✓ Virtual environment Python is active.
+
+echo.
+echo Testing virtual environment (Old Test)...
 echo Current Python details:
 python -c "import sys; print(f'Python: {sys.version}'); print(f'Executable: {sys.executable}'); print(f'Path: {sys.path[:3]}')"
 
@@ -182,11 +208,11 @@ echo ========================================
 echo Installation Analysis Complete!
 echo ========================================
 echo.
-echo If you see this message, the installation completed!
-echo Any errors above will help identify what went wrong.
+echo If you see this message, the installation script completed ALL steps!
+echo Review any WARNINGS or ERRORS above to identify issues.
 echo.
 echo To start WebTalk:
-echo   .\Launch.bat
+echo   .\\Launch.bat
 echo.
 echo DEBUG: Press any key to continue...
 pause 
