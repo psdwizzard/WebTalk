@@ -1,0 +1,8 @@
+{
+  "compute_engine": "gpu",
+  "model": "turbo",
+  "microphone": "default",
+  "server_port": 8000,
+  "auth_key": "",
+  "openai_api_key": ""
+}
