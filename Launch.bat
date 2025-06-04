@@ -1,14 +1,32 @@
 @echo off
-echo Starting WebTalk - Whisper Server & Settings App...
+echo ========================================
+echo WebTalk with Settings App
+echo ========================================
+echo.
+
+REM Change to the directory where this script is located
 cd /d "%~dp0"
 
-echo Starting Whisper Server...
-start "WebTalk Whisper Server" whisper_env\Scripts\python.exe server.py
+REM --- Add bundled ffmpeg to PATH ---
+set FFMPEG_DIR=%~dp0ffmpeg_binaries
+echo Adding bundled ffmpeg to PATH: %FFMPEG_DIR%
+set PATH=%FFMPEG_DIR%;%PATH%
+REM You can verify by uncommenting the next line
+REM echo Current PATH: %PATH%
+echo.
+REM --- End ffmpeg PATH modification ---
 
-echo Waiting for server to initialize...
-timeout /t 3 /nobreak >nul
+REM Check if virtual environment exists
+if not exist "whisper_env\Scripts\python.exe" (
+    echo Error: Virtual environment not found!
+    echo Please run install.bat first.
+    pause
+    exit /b 1
+)
 
-echo Starting Settings App...
-whisper_env\Scripts\python.exe settings_app_flask.py
+echo Starting WebTalk server with settings app...
+echo The settings app will open automatically.
+echo Press Ctrl+C to stop the server
+echo.
 
-pause 
+call whisper_env\Scripts\activate.bat && python server.py --settings-app flask 
