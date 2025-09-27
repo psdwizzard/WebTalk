@@ -1,0 +1,29 @@
+# Core AI and Processing
+torch
+torchaudio
+openai-whisper
+
+# Web Framework
+fastapi
+uvicorn
+python-multipart
+requests
+pydantic
+
+# GUI Framework
+flask
+pywebview
+
+# System and Audio
+psutil
+numpy
+sounddevice
+
+# Windows-specific dependencies (automatically handled by installer)
+# pywebview[win32] - included in installer for Windows compatibility
+
+# Optional dependencies for enhanced functionality
+# These may be installed separately if needed:
+# webrtcvad - for voice activity detection
+# scipy - for advanced audio processing
+# matplotlib - for audio visualization 

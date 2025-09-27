@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebTalk</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <div class="logo"><img src="WebTalk.png" alt="WebTalk Logo"></div>
+      <h1>WebTalk</h1>
+      <p>Desktop voice transcription companion</p>
+    </div>
+    
+    <div class="content">
+      <div class="how-to-use">
+        <h3>How to Use:</h3>
+        <ol>
+          <li>Right-click anywhere on a webpage</li>
+          <li>Select "🎤 Start WebTalk Recording"</li>
+          <li>Recording starts automatically - speak now</li>
+          <li>Click "Stop" or "Stop & Copy" when done</li>
+        </ol>
+      </div>
+      
+      <div class="server-status" id="serverStatus">
+        <div class="status-indicator" id="statusIndicator">🔴</div>
+        <span id="statusText">Checking server...</span>
+      </div>
+      
+      <div class="actions">
+        <button id="testServer" class="btn">Test Server</button>
+        <button id="openSettings" class="btn secondary">Settings</button>
+      </div>
+      
+      <div class="footer">
+        <p>Powered by Whisper AI</p>
+        <p class="version">Works with WebTalk Desktop App</p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 
