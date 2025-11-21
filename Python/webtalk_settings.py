@@ -4,10 +4,13 @@ WebTalk Settings App Launcher
 This launcher sets the process icon before starting the main app.
 """
 
-import os
 import sys
 import ctypes
-from ctypes import wintypes
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+IMAGES_DIR = PROJECT_ROOT / "Images"
 
 def set_process_icon():
     """Set the process icon before creating any windows"""
@@ -17,14 +20,14 @@ def set_process_icon():
         shell32.SetCurrentProcessExplicitAppUserModelID("WebTalk.SettingsApp.1.0")
         
         # Get icon path
-        icon_path = os.path.join(os.path.dirname(__file__), 'WebTalk.ico')
+        icon_path = IMAGES_DIR / "WebTalk.ico"
         
-        if os.path.exists(icon_path):
+        if icon_path.exists():
             # Load the icon
             user32 = ctypes.windll.user32
             hicon = user32.LoadImageW(
                 None,
-                icon_path,
+                str(icon_path),
                 1,  # IMAGE_ICON
                 0, 0,  # Use default size
                 0x00000010  # LR_LOADFROMFILE

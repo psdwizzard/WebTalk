@@ -11,6 +11,7 @@ import json
 import threading
 import subprocess
 import sys
+from pathlib import Path
 from fastapi import FastAPI, File, UploadFile, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, HTMLResponse
@@ -34,10 +35,14 @@ class ServerConfig(BaseModel):
     auth_key: str = ""
     openai_api_key: str = ""
 
+# Paths
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+config_file = PROJECT_ROOT / "webtalk_config.json"
+
 # Global variables
 model = None
 current_config = ServerConfig()
-config_file = "webtalk_config.json"
 
 # Initialize the app
 app = FastAPI(title="WebTalk Whisper API", version="1.0.0")
@@ -55,8 +60,8 @@ def load_config():
     """Load configuration from file."""
     global current_config
     try:
-        if os.path.exists(config_file):
-            with open(config_file, 'r') as f:
+        if config_file.exists():
+            with config_file.open('r') as f:
                 config_data = json.load(f)
                 current_config = ServerConfig(**config_data)
                 logger.info(f"Configuration loaded: {current_config.model} model on {current_config.compute_engine}")
@@ -71,7 +76,7 @@ def load_config():
 def save_config():
     """Save current configuration to file."""
     try:
-        with open(config_file, 'w') as f:
+        with config_file.open('w') as f:
             json.dump(current_config.model_dump(), f, indent=2)
     except Exception as e:
         logger.error(f"Error saving config: {e}")
@@ -81,15 +86,15 @@ def launch_settings_app(app_type="flask"):
     try:
         # Choose which settings app to launch
         if app_type == "flask":
-            app_file = "launch_settings.py"  # Use the launcher for better window handling
+            app_file = BASE_DIR / "launch_settings.py"  # Use the launcher for better window handling
         else:
-            app_file = "settings_app.py"
+            app_file = BASE_DIR / "settings_app.py"
             
         # Launch settings app in a separate process
         if os.name == 'nt':  # Windows
-            subprocess.Popen([sys.executable, app_file])
+            subprocess.Popen([sys.executable, str(app_file)])
         else:  # Unix/Linux/Mac
-            subprocess.Popen([sys.executable, app_file])
+            subprocess.Popen([sys.executable, str(app_file)])
         logger.info(f"Settings app launcher started ({app_type})")
     except Exception as e:
         logger.error(f"Failed to launch settings app: {e}")

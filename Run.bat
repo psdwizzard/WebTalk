@@ -28,4 +28,4 @@ echo The settings app will open automatically.
 echo Press Ctrl+C to stop the server
 echo.
 
-call whisper_env\Scripts\activate.bat && python server.py --settings-app flask 
+call whisper_env\Scripts\activate.bat && python Python\server.py --settings-app flask 

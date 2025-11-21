@@ -5,9 +5,9 @@ Beautiful desktop settings interface using the original HTML design.
 """
 
 import json
-import os
 import threading
 import time
+from pathlib import Path
 from typing import Dict, Any
 import requests
 import webview
@@ -15,9 +15,14 @@ from flask import Flask, render_template_string, request, jsonify
 import ctypes
 from ctypes import wintypes
 
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+IMAGES_DIR = PROJECT_ROOT / "Images"
+CONFIG_FILE = PROJECT_ROOT / "webtalk_config.json"
+
 class WebTalkSettingsApp:
     def __init__(self):
-        self.config_file = "webtalk_config.json"
+        self.config_file = CONFIG_FILE
         self.server_url = "http://localhost:8000"
         
         # Default configuration
@@ -37,8 +42,8 @@ class WebTalkSettingsApp:
     def load_config(self):
         """Load configuration from file"""
         try:
-            if os.path.exists(self.config_file):
-                with open(self.config_file, 'r') as f:
+            if self.config_file.exists():
+                with self.config_file.open('r') as f:
                     saved_config = json.load(f)
                     self.config.update(saved_config)
         except Exception as e:
@@ -47,7 +52,7 @@ class WebTalkSettingsApp:
     def save_config(self):
         """Save configuration to file"""
         try:
-            with open(self.config_file, 'w') as f:
+            with self.config_file.open('w') as f:
                 json.dump(self.config, f, indent=2)
         except Exception as e:
             print(f"Error saving config: {e}")
@@ -128,12 +133,20 @@ class WebTalkSettingsApp:
         def serve_logo():
             """Serve the WebTalk logo"""
             from flask import send_file
-            import os
-            logo_path = os.path.join(os.path.dirname(__file__), 'WebTalk.png')
-            if os.path.exists(logo_path):
+            logo_path = IMAGES_DIR / "WebTalk.png"
+            if logo_path.exists():
                 return send_file(logo_path, mimetype='image/png')
             else:
                 return '', 404
+
+        @self.app.route('/Robot.png')
+        def serve_robot():
+            """Serve the DeskTalk robot illustration"""
+            from flask import send_file
+            robot_path = IMAGES_DIR / "Robot.png"
+            if robot_path.exists():
+                return send_file(robot_path, mimetype='image/png')
+            return '', 404
             
     def update_server_config(self):
         """Send updated config to running server"""
@@ -884,10 +897,24 @@ class WebTalkSettingsApp:
         }
 
         .hint {
-            margin-top: 12px;
-            text-align: center;
+            margin-top: auto;
+            text-align: left;
             font-size: 0.8rem;
             color: var(--wt-text-muted);
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 6px 12px;
+        }
+        .hint .hint-text {
+            align-self: flex-end;
+        }
+        .hint .robot-illustration {
+            width: 150px;
+            opacity: 0.95;
+            pointer-events: none;
         }
 
         .alert {
@@ -947,7 +974,10 @@ class WebTalkSettingsApp:
                     Your transcription will appear here.
                 </div>
                 <div class="transcription-text" id="transcriptionText" style="display: none;"></div>
-                <div class="hint">Right-click the text to copy</div>
+                <div class="hint">
+                    <div class="hint-text" style="flex: 1; text-align: left;">Right-click the text to copy</div>
+                    <img src="/Robot.png" class="robot-illustration" alt="Robot holding microphone">
+                </div>
             </div>
         </div>
 
@@ -1129,11 +1159,20 @@ class WebTalkSettingsApp:
                         // Update the hint text instead of showing popup
                         const hintElement = document.querySelector('.hint');
                         if (hintElement) {
-                            const originalText = hintElement.textContent;
-                            hintElement.textContent = 'Copied to clipboard';
+                            const textNode = hintElement.querySelector('.hint-text');
+                            const originalText = textNode ? textNode.textContent : hintElement.textContent;
+                            if (textNode) {
+                                textNode.textContent = 'Copied to clipboard';
+                            } else {
+                                hintElement.textContent = 'Copied to clipboard';
+                            }
                             hintElement.style.color = '#10b981'; // Green color
                             setTimeout(() => {
-                                hintElement.textContent = originalText;
+                                if (textNode) {
+                                    textNode.textContent = originalText;
+                                } else {
+                                    hintElement.textContent = originalText;
+                                }
                                 hintElement.style.color = ''; // Reset color
                             }, 2000);
                         }
@@ -1218,21 +1257,21 @@ class WebTalkSettingsApp:
                     print("Dark title bar applied successfully!")
                     
                     # Set custom icon
-                    icon_path = os.path.join(os.path.dirname(__file__), 'WebTalk.ico')
-                    if os.path.exists(icon_path):
+                    icon_path = IMAGES_DIR / "WebTalk.ico"
+                    if icon_path.exists():
                         user32 = ctypes.windll.user32
                         
                         # Load icon with multiple sizes
                         hicon_small = user32.LoadImageW(
                             None, 
-                            icon_path, 
+                            str(icon_path), 
                             1,  # IMAGE_ICON
                             16, 16,  # Small icon size
                             0x00000010  # LR_LOADFROMFILE
                         )
                         hicon_large = user32.LoadImageW(
                             None, 
-                            icon_path, 
+                            str(icon_path), 
                             1,  # IMAGE_ICON
                             32, 32,  # Large icon size
                             0x00000010  # LR_LOADFROMFILE

@@ -40,7 +40,7 @@ install.bat
 ### 2. Launch WebTalk
 ```bash
 # Start everything with one command (use .\\ in PowerShell)
-.\Launch.bat
+.\launch.bat
 ```
 
 This single command starts:
@@ -64,19 +64,26 @@ This single command starts:
 
 ```
 WebTalk/
-├── README.md                     # This file
-├── requirements.txt              # Python dependencies  
-├── install.bat                   # Setup script
-├── Launch.bat                    # 🚀 MAIN LAUNCHER
-├── server.py                     # 🤖 Whisper transcription server
-├── settings_app_flask.py        # 🖥️ Settings GUI application
-├── webtalk_settings.py          # Entry point helper
-├── webtalk_config.json          # Configuration file
-├── WebTalk.ico         # App icon
-├── chrome_extension/            # Browser extension
-├── docs/                        # Documentation & screenshots
-├── build/                       # Executable building tools
-└── whisper_env/                 # Python virtual environment
+??? README.md
+??? requirements.txt              # Python dependencies  
+??? install.bat                   # Setup script
+??? launch.bat                    # dYs? MAIN LAUNCHER
+??? runwithsettings.bat           # Launcher that starts server + settings
+??? desktalk_debug.html           # Optional debug UI
+??? Images/                       # Shared assets
+?   ??? WebTalk.ico               # App icon
+?   ??? WebTalk.png               # App logo
+??? Python/                       # Application code
+?   ??? server.py                 # dY??- Whisper transcription server
+?   ??? settings_app_flask.py     # dY-??,? Settings GUI application
+?   ??? launch_settings.py        # Helper launcher
+?   ??? webtalk_settings.py       # Entry point helper
+??? webtalk_config.json           # Configuration file (created at runtime)
+??? chrome_extension/             # Browser extension
+??? docs/                         # Documentation & screenshots
+??? ffmpeg_binaries/              # Bundled ffmpeg
+??? whisper_env/                  # Python virtual environment
+??? _archive/                     # Older/backup scripts
 ```
 
 ## ⚙️ Configuration
