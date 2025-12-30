@@ -216,6 +216,8 @@ class WebTalkSettingsApp:
             box-sizing: border-box;
             height: 100vh;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .tab-container {
@@ -250,6 +252,23 @@ class WebTalkSettingsApp:
             background: rgba(37, 99, 235, 0.14);
             color: var(--wt-heading);
             transform: translateY(-1px);
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        .tab-content iframe {
+            flex: 1;
+            min-height: 0;
         }
 
         .input-group {
@@ -428,7 +447,7 @@ class WebTalkSettingsApp:
         </div>
         
         <!-- Settings Tab Content -->
-        <div id="settings-tab" class="tab-content" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+        <div id="settings-tab" class="tab-content">
             <div class="input-group">
                 <label for="compute-engine">Compute Engine</label>
                 <div class="toggle-switch-container">
@@ -470,31 +489,6 @@ class WebTalkSettingsApp:
                 </div>
             </div>
             
-            <div class="input-group">
-                <label for="server-port">Server Port</label>
-                <div class="icon-input-group">
-                    <span class="material-icons">settings_ethernet</span>
-                    <input class="input-field" id="server-port" placeholder="e.g., 8080" type="number" value="{{ config.server_port }}"/>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="auth-key">Authentication Key (Optional)</label>
-                <div class="icon-input-group">
-                    <span class="material-icons">vpn_key</span>
-                    <input class="input-field" id="auth-key" placeholder="Enter a secure key" type="password" value="{{ config.auth_key }}"/>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="openai-api-key">OpenAI API Key (Fallback)</label>
-                <div class="icon-input-group">
-                    <span class="material-icons">api</span>
-                    <input class="input-field" id="openai-api-key" placeholder="sk-..." type="text" value="{{ config.openai_api_key }}"/>
-                </div>
-                <p class="text-xs text-gray-300 mt-1 opacity-75">Used if local hardware is insufficient.</p>
-            </div>
-            
             <button class="btn btn-primary" id="save-apply-button">
                 <span class="material-icons mr-2">save</span>
                 Save & Apply Settings
@@ -507,8 +501,8 @@ class WebTalkSettingsApp:
         </div>
         
         <!-- DeskTalk Tab Content -->
-        <div id="desktalk-tab" class="tab-content" style="display: none;">
-            <iframe src="/desktalk?v=9" style="width: calc(100% - 24px); height: calc(100vh - 204px); border: none; border-radius: 12px; margin: 12px; padding: 0; display: block;"></iframe>
+        <div id="desktalk-tab" class="tab-content">
+            <iframe src="/desktalk?v=11" style="width: 100%; height: 100%; border: none; border-radius: 12px;"></iframe>
         </div>
     </div>
 
@@ -516,9 +510,9 @@ class WebTalkSettingsApp:
         function switchTab(tabName) {
             console.log('Switching to tab:', tabName);
             
-            // Hide all tab contents
+            // Hide all tab contents (remove active class)
             document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
+                tab.classList.remove('active');
                 console.log('Hiding tab:', tab.id);
             });
             
@@ -527,10 +521,10 @@ class WebTalkSettingsApp:
                 btn.classList.remove('active');
             });
             
-            // Show selected tab content
+            // Show selected tab content (add active class)
             const targetTab = document.getElementById(tabName + '-tab');
             if (targetTab) {
-                targetTab.style.display = 'block';
+                targetTab.classList.add('active');
                 console.log('Showing tab:', targetTab.id);
             } else {
                 console.error('Tab not found:', tabName + '-tab');
@@ -549,19 +543,7 @@ class WebTalkSettingsApp:
         function initializeTabs() {
             console.log('Initializing tab interface');
 
-            const settingsTab = document.getElementById('settings-tab');
-            const desktalkTab = document.getElementById('desktalk-tab');
-
-            if (settingsTab) {
-                settingsTab.style.display = 'none';
-                console.log('Settings tab hidden');
-            }
-
-            if (desktalkTab) {
-                desktalkTab.style.display = 'block';
-                console.log('DeskTalk tab visible');
-            }
-
+            // Set up tab button click handlers
             const tabButtons = document.querySelectorAll('.tab-button');
             if (tabButtons.length) {
                 tabButtons.forEach(btn => {
@@ -572,9 +554,10 @@ class WebTalkSettingsApp:
                     }
                 });
 
-                tabButtons.forEach(btn => btn.classList.remove('active'));
+                // Switch to the default tab (DeskTalk)
                 const defaultTab = tabButtons[0].getAttribute('data-tab') || 'desktalk';
                 switchTab(defaultTab);
+                console.log('Default tab activated:', defaultTab);
             }
         }
 
@@ -614,10 +597,7 @@ class WebTalkSettingsApp:
                 const data = {
                     compute_engine: computeToggle.checked ? 'gpu' : 'cpu',
                     model: document.getElementById('model-selector').value,
-                    microphone: document.getElementById('microphone-selector').value,
-                    server_port: parseInt(document.getElementById('server-port').value),
-                    auth_key: document.getElementById('auth-key').value,
-                    openai_api_key: document.getElementById('openai-api-key').value
+                    microphone: document.getElementById('microphone-selector').value
                 };
                 
                 console.log('Toggle checked:', computeToggle.checked);
@@ -726,7 +706,7 @@ class WebTalkSettingsApp:
         body {
             font-family: 'Roboto', sans-serif;
             background: radial-gradient(circle at 35% 15%, #111c2e 0%, #0b1324 55%, #050a18 100%);
-            height: 100vh;
+            height: 100%;
             margin: 0;
             padding: 0;
             display: flex;
@@ -740,7 +720,6 @@ class WebTalkSettingsApp:
             position: relative;
             height: 100%;
             width: 100%;
-            flex: 1;
             background: var(--wt-surface);
             border-radius: 0;
             padding: 8px;
@@ -871,12 +850,13 @@ class WebTalkSettingsApp:
             background: var(--wt-panel);
             border: 1px solid var(--wt-border);
             box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.08);
-            flex: 0.99;
+            flex: 1;
             position: relative;
             display: flex;
             flex-direction: column;
             gap: 5px;
             overflow: hidden;
+            min-height: 0;
         }
 
         .transcription-placeholder {
@@ -1213,13 +1193,33 @@ class WebTalkSettingsApp:
         print("Flask server started successfully!")
         print("Creating PyWebView window...")
         
+        # Calculate window dimensions based on screen size
+        # Target: 90% of screen height, with max of 950px (original design height)
+        # Width stays fixed - content will adapt via flexbox
+        MAX_HEIGHT = 950
+        WINDOW_WIDTH = 550
+        
+        try:
+            # Get screen dimensions using Windows API
+            user32 = ctypes.windll.user32
+            screen_height = user32.GetSystemMetrics(1)  # SM_CYSCREEN
+            print(f"Detected screen height: {screen_height}px")
+            
+            # Calculate 90% of screen height, capped at MAX_HEIGHT
+            target_height = min(int(screen_height * 0.9), MAX_HEIGHT)
+            
+            print(f"Window size: {WINDOW_WIDTH}x{target_height}")
+        except Exception as e:
+            print(f"Could not get screen dimensions, using defaults: {e}")
+            target_height = MAX_HEIGHT
+        
         # Create and start the webview window
         try:
             window = webview.create_window(
                 'WebTalk Server Settings',
                 'http://127.0.0.1:5555',
-                width=550,
-                height=950,
+                width=WINDOW_WIDTH,
+                height=target_height,
                 resizable=True,
                 shadow=True,
                 on_top=False,  # Allow window to go behind other windows
